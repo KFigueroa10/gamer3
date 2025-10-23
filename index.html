@@ -1279,7 +1279,7 @@
       document.getElementById('orders-btn')?.addEventListener('click', ()=>{
         try {
           const last = JSON.parse(localStorage.getItem('last_order')||'null');
-          cartModal.style.display='block';
+          cartModal.classList.add('active');
           if (!last) { cartItemsEl.innerHTML = '<p>No tienes pedidos recientes.</p>'; return; }
           cartItemsEl.innerHTML = `
             <div style="text-align:left">

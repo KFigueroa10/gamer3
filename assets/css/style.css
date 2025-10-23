@@ -19,8 +19,10 @@
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 8px;
   padding: 10px;
-  max-height: 260px;
+  max-height: 300px;
   overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 #cart-modal .btn {
@@ -28,6 +30,34 @@
 }
 
 #cart-modal .btn + .btn { margin-top: 10px; }
+
+/* Filas del carrito generadas por JS */
+#cart-items > div {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 8px 10px !important;
+  background: rgba(255,255,255,0.05) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  border-radius: 6px !important;
+  color: var(--white) !important;
+  margin: 6px 0 !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+}
+
+/* Botón pequeño para QUITAR dentro de cada fila */
+#cart-items > div .btn {
+  width: auto !important;
+  min-height: 32px !important;
+  font-size: 1.2rem !important;
+  padding: 6px 10px !important;
+}
+
+/* Reducir decoración del botón pequeño */
+#cart-items > div .btn::after { display: none; }
+#cart-items > div .btn::before { --skewX: -10deg; }
 
 /*-----------------------------------*\
   #style.css
