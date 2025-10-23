@@ -132,6 +132,10 @@
             <span class="cart-badge">0</span>
           </button>
 
+          <button class="search-btn" aria-label="mis pedidos" id="orders-btn">
+            <ion-icon name="receipt-outline"></ion-icon>
+          </button>
+
           <button class="search-btn" aria-label="open search" data-search-toggler>
             <ion-icon name="search-outline"></ion-icon>
           </button>
@@ -242,11 +246,7 @@
       <section class="section brand" aria-label="marcas">
         <div class="container">
 
-          <div class="see-more" style="justify-content: space-between; align-items:center; margin-bottom:8px">
-            <button class="btn skewBg" id="shop-prev" aria-label="prev">◀</button>
-            <button class="btn skewBg" id="shop-next" aria-label="next">▶</button>
-          </div>
-          <ul class="has-scrollbar" id="shop-list">
+          <ul class="has-scrollbar">
 
             <li class="brand-item">
               <img src="./assets/images/brand-1.png" width="90" height="90" loading="lazy" alt="brand logo">
@@ -446,7 +446,11 @@
             Todos los <span class="span">juegos</span>
           </h2>
 
-          <ul class="has-scrollbar">
+          <div class="see-more" style="display:flex; justify-content: space-between; align-items:center; margin-bottom:8px; gap:8px">
+            <button class="btn skewBg" id="shop-prev" aria-label="anterior">◀</button>
+            <button class="btn skewBg" id="shop-next" aria-label="siguiente">▶</button>
+          </div>
+          <ul class="has-scrollbar" id="shop-list">
 
             <li class="scrollbar-item">
               <div class="featured-game-card">
@@ -688,7 +692,7 @@
             </li>
 
             <li class="scrollbar-item">
-              <div class="shop-card">
+              <div class="shop-card" data-product-name="Gears 5 Xbox Controller" data-price="29.00">
 
                 <figure class="card-banner img-holder" style="--width: 300; --height: 260;">
                   <img src="./assets/images/shop-img-2.jpg" width="300" height="260" loading="lazy"
@@ -706,7 +710,7 @@
                   <div class="card-wrapper">
                     <p class="card-price">$29.00</p>
 
-                    <button class="card-btn">
+                    <button class="card-btn" data-add-to-cart>
                       <ion-icon name="basket"></ion-icon>
                     </button>
                   </div>
@@ -717,7 +721,7 @@
             </li>
 
             <li class="scrollbar-item">
-              <div class="shop-card">
+              <div class="shop-card" data-product-name="GeForce RTX 2070" data-price="29.00">
 
                 <figure class="card-banner img-holder" style="--width: 300; --height: 260;">
                   <img src="./assets/images/shop-img-3.jpg" width="300" height="260" loading="lazy"
@@ -735,7 +739,7 @@
                   <div class="card-wrapper">
                     <p class="card-price">$29.00</p>
 
-                    <button class="card-btn">
+                    <button class="card-btn" data-add-to-cart>
                       <ion-icon name="basket"></ion-icon>
                     </button>
                   </div>
@@ -746,7 +750,7 @@
             </li>
 
             <li class="scrollbar-item">
-              <div class="shop-card">
+              <div class="shop-card" data-product-name="GeForce RTX 2070" data-price="29.00">
 
                 <figure class="card-banner img-holder" style="--width: 300; --height: 260;">
                   <img src="./assets/images/shop-img-4.jpg" width="300" height="260" loading="lazy"
@@ -764,7 +768,7 @@
                   <div class="card-wrapper">
                     <p class="card-price">$29.00</p>
 
-                    <button class="card-btn">
+                    <button class="card-btn" data-add-to-cart>
                       <ion-icon name="basket"></ion-icon>
                     </button>
                   </div>
@@ -1278,12 +1282,62 @@
       closeBtn?.addEventListener('click', ()=>{ cartModal.style.display = 'none'; });
       confirmBtn?.addEventListener('click', async ()=>{
         const order = {
-          items: cart, total: cart.reduce((s,i)=> s + parseFloat(i.price||0), 0),
-          name: nameEl.value.trim(), address: addrEl.value.trim(), method: methodEl.value, eta: etaEl.value,
+          items: cart,
+          total: cart.reduce((s,i)=> s + parseFloat(i.price||0), 0),
+          name: nameEl.value.trim(),
+          address: addrEl.value.trim(),
+          method: methodEl.value,
+          eta: etaEl.value,
+          status: 'en_camino',
           createdAt: Date.now()
         };
         if(!order.name || !order.address || !order.items.length){ alert('Completa tus datos y agrega productos.'); return; }
-        try { await set(push(ref(db,'orders')), order); cart = []; localStorage.setItem('cart','[]'); updateBadge(); renderCart(); alert('¡Pedido realizado!'); cartModal.style.display='none'; } catch(e){ alert('Error al confirmar.'); }
+        try {
+          const newRef = push(ref(db,'orders'));
+          await set(newRef, order);
+          const orderId = newRef.key;
+          localStorage.setItem('last_order', JSON.stringify({ id: orderId, ...order }));
+          // Limpiar carrito y mostrar resumen
+          cart = []; localStorage.setItem('cart','[]'); updateBadge();
+          cartItemsEl.innerHTML = `
+            <div style="text-align:left">
+              <h4>Pedido confirmado</h4>
+              <p><strong>ID:</strong> ${orderId}</p>
+              <p><strong>Nombre:</strong> ${order.name}</p>
+              <p><strong>Dirección:</strong> ${order.address}</p>
+              <p><strong>Método de pago:</strong> ${order.method}</p>
+              <p><strong>Entrega:</strong> ${order.eta} — <span style="color:#a3ff12">${order.status.replace('_',' ')}</span></p>
+              <hr/>
+              <div>${order.items.map(i=>`<div style='display:flex;justify-content:space-between'><span>${i.name}</span><span>$${i.price}</span></div>`).join('')}</div>
+              <hr/>
+              <p><strong>Total:</strong> $${order.total.toFixed(2)}</p>
+            </div>`;
+          alert('¡Pedido realizado! Puedes consultar en “Mis pedidos”.');
+        } catch(e){ alert('Error al confirmar.'); }
+      });
+
+      // Ver último pedido
+      document.getElementById('orders-btn')?.addEventListener('click', ()=>{
+        try {
+          const last = JSON.parse(localStorage.getItem('last_order')||'null');
+          cartModal.style.display='block';
+          if (!last) { cartItemsEl.innerHTML = '<p>No tienes pedidos recientes.</p>'; return; }
+          cartItemsEl.innerHTML = `
+            <div style="text-align:left">
+              <h4>Último pedido</h4>
+              <p><strong>ID:</strong> ${last.id}</p>
+              <p><strong>Nombre:</strong> ${last.name}</p>
+              <p><strong>Dirección:</strong> ${last.address}</p>
+              <p><strong>Método de pago:</strong> ${last.method}</p>
+              <p><strong>Entrega:</strong> ${last.eta} — <span style="color:#a3ff12">${last.status?.replace('_',' ')||'en camino'}</span></p>
+              <hr/>
+              <div>${(last.items||[]).map(i=>`<div style='display:flex;justify-content:space-between'><span>${i.name}</span><span>$${i.price}</span></div>`).join('')}</div>
+              <hr/>
+              <p><strong>Total:</strong> $${Number(last.total||0).toFixed(2)}</p>
+            </div>`;
+        } catch(_) {
+          cartItemsEl.innerHTML = '<p>No se pudo cargar el pedido.</p>';
+        }
       });
 
       // Carousel controls
