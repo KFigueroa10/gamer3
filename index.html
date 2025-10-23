@@ -213,7 +213,7 @@
       </section>
 
       <!-- Cart Modal -->
-      <div id="cart-modal" class="search-container" style="display:none;">
+      <div id="cart-modal" class="search-container" aria-modal="true" role="dialog">
         <div class="input-wrapper" style="max-width:720px">
           <h3 style="margin-bottom:10px">Carrito</h3>
           <div id="cart-items" style="max-height:260px; overflow:auto; margin-bottom:10px"></div>
@@ -1230,11 +1230,14 @@
           cart.push({name, price});
           localStorage.setItem('cart', JSON.stringify(cart));
           updateBadge();
+          // abrir modal para feedback inmediato
+          cartModal.classList.add('active');
+          renderCart();
           try { await set(push(ref(db,'cart_events')), {action:'add_to_cart', name, price, createdAt: Date.now()}); } catch(_){ }
         });
       });
-      cartBtn?.addEventListener('click', ()=>{ cartModal.style.display = 'block'; renderCart(); });
-      closeBtn?.addEventListener('click', ()=>{ cartModal.style.display = 'none'; });
+      cartBtn?.addEventListener('click', ()=>{ cartModal.classList.add('active'); renderCart(); });
+      closeBtn?.addEventListener('click', ()=>{ cartModal.classList.remove('active'); });
       confirmBtn?.addEventListener('click', async ()=>{
         const order = {
           items: cart,
@@ -1268,6 +1271,7 @@
               <p><strong>Total:</strong> $${order.total.toFixed(2)}</p>
             </div>`;
           alert('¡Pedido realizado! Puedes consultar en “Mis pedidos”.');
+          cartModal.classList.remove('active');
         } catch(e){ alert('Error al confirmar.'); }
       });
 

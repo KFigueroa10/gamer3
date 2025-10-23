@@ -1,3 +1,34 @@
+.search-container .email-field,
+.search-container select,
+.search-container textarea {
+  background-color: rgba(255,255,255,0.06);
+  color: var(--white);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+#cart-modal h3 {
+  color: var(--white);
+  font-family: var(--ff-oxanium);
+  margin-bottom: 12px;
+}
+
+#cart-items {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 10px;
+  max-height: 260px;
+  overflow: auto;
+}
+
+#cart-modal .btn {
+  width: 100%;
+}
+
+#cart-modal .btn + .btn { margin-top: 10px; }
+
 /*-----------------------------------*\
   #style.css
 \*-----------------------------------*/
@@ -435,7 +466,7 @@ body {
 \*-----------------------------------*/
 
 .search-container {
-  background-color: var(--rich-black-fogra-29_95);
+  background-color: rgba(0,0,0,0.85);
   position: fixed;
   inset: 0;
   display: flex;
@@ -455,16 +486,22 @@ body {
 
 .search-container .input-wrapper {
   position: relative;
-  max-width: 560px;
+  max-width: 720px;
   width: 100%;
+  background-color: var(--eerie-black-1);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.45);
 }
 
 .search-container .search-field {
   color: var(--white);
-  font-size: 2rem;
-  padding: 20px;
+  font-size: 1.8rem;
+  padding: 14px 16px;
   padding-inline-end: 60px;
-  border-block-end: 3px solid var(--white_10);
+  border: 1px solid var(--white_10);
+  border-radius: 8px;
   outline: none;
   transition: var(--transition);
 }
