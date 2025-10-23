@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tienda - Gamics</title>
+  <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body id="top">
+  <header class="header">
+    <div class="header-bottom skewBg" data-header>
+      <div class="container">
+        <a href="index.html" class="logo">Gamics</a>
+        <div class="header-actions">
+          <button class="cart-btn" aria-label="cart"><ion-icon name="cart"></ion-icon><span class="cart-badge">0</span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section shop" aria-label="tienda" style="background-image: url('./assets/images/shop-bg.jpg')">
+      <div class="container">
+        <h1 class="h2 section-title">Tienda</h1>
+        <ul class="has-scrollbar">
+          <li class="scrollbar-item">
+            <div class="shop-card">
+              <figure class="card-banner img-holder" style="--width: 300; --height: 260;">
+                <img src="./assets/images/shop-img-1.jpg" width="300" height="260" loading="lazy" alt="Camiseta negra" class="img-cover">
+              </figure>
+              <div class="card-content">
+                <a href="#" class="card-badge skewBg">camiseta</a>
+                <h3 class="h3"><a href="#" class="card-title">Camiseta negra</a></h3>
+                <div class="card-wrapper">
+                  <p class="card-price">$29.00</p>
+                  <button class="card-btn"><ion-icon name="basket"></ion-icon></button>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="scrollbar-item">
+            <div class="shop-card">
+              <figure class="card-banner img-holder" style="--width: 300; --height: 260;">
+                <img src="./assets/images/shop-img-3.jpg" width="300" height="260" loading="lazy" alt="GeForce RTX 2070" class="img-cover">
+              </figure>
+              <div class="card-content">
+                <a href="#" class="card-badge skewBg">gráficos</a>
+                <h3 class="h3"><a href="#" class="card-title">GeForce RTX 2070</a></h3>
+                <div class="card-wrapper">
+                  <p class="card-price">$29.00</p>
+                  <button class="card-btn"><ion-icon name="basket"></ion-icon></button>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <div class="container"><p class="copyright">&copy; 2025 Gamics.</p></div>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyD8ZRaJgCBbUsJj_26z1vVI-yBOjg2mrJc",
+      authDomain: "gamer-92ce6.firebaseapp.com",
+      databaseURL: "https://gamer-92ce6-default-rtdb.firebaseio.com",
+      projectId: "gamer-92ce6",
+      storageBucket: "gamer-92ce6.firebasestorage.app",
+      messagingSenderId: "1079058103599",
+      appId: "1:1079058103599:web:d9401e6c39c69780d0b5da"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const badge = document.querySelector('.cart-badge');
+    let count = Number(badge?.textContent || 0) || 0;
+    document.querySelectorAll('.card-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        count += 1; if (badge) badge.textContent = String(count);
+        try { const r = ref(db, 'cart_events'); await set(push(r), { page:'tienda', action:'add_to_cart', createdAt: Date.now() }); } catch(e){ console.error(e); }
+      });
+    });
+  </script>
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

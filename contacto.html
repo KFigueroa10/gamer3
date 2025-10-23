@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contacto - Gamics</title>
+  <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body id="top">
+  <header class="header">
+    <div class="header-bottom skewBg" data-header>
+      <div class="container">
+        <a href="index.html" class="logo">Gamics</a>
+        <nav class="navbar" data-navbar>
+          <ul class="navbar-list">
+            <li class="navbar-item"><a href="index.html#home" class="navbar-link skewBg" data-nav-link>Inicio</a></li>
+            <li class="navbar-item"><a href="index.html#live" class="navbar-link skewBg" data-nav-link>En vivo</a></li>
+            <li class="navbar-item"><a href="index.html#features" class="navbar-link skewBg" data-nav-link>Características</a></li>
+            <li class="navbar-item"><a href="tienda.html" class="navbar-link skewBg" data-nav-link>Tienda</a></li>
+            <li class="navbar-item"><a href="blog.html" class="navbar-link skewBg" data-nav-link>Blog</a></li>
+            <li class="navbar-item"><a href="contacto.html" class="navbar-link skewBg" data-nav-link>Contacto</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" aria-label="contacto">
+      <div class="container">
+        <h1 class="h2 section-title">Contáctanos</h1>
+        <p>¿Tienes preguntas o sugerencias? Envíanos un mensaje.</p>
+        <form id="contact-form" class="newsletter-form" style="max-width:640px">
+          <div class="input-wrapper skewBg" style="margin-bottom:12px">
+            <input type="text" name="name" placeholder="Tu nombre" required class="email-field">
+          </div>
+          <div class="input-wrapper skewBg" style="margin-bottom:12px">
+            <input type="email" name="email" placeholder="Tu correo" required class="email-field">
+          </div>
+          <div class="input-wrapper skewBg" style="margin-bottom:12px">
+            <textarea name="message" placeholder="Mensaje" rows="5" required class="email-field" style="padding:14px"></textarea>
+          </div>
+          <button type="submit" class="btn newsletter-btn skewBg"><span class="span">Enviar</span></button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <div class="container">
+        <p class="copyright">&copy; 2025 Gamics.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD8ZRaJgCBbUsJj_26z1vVI-yBOjg2mrJc",
+      authDomain: "gamer-92ce6.firebaseapp.com",
+      databaseURL: "https://gamer-92ce6-default-rtdb.firebaseio.com",
+      projectId: "gamer-92ce6",
+      storageBucket: "gamer-92ce6.firebasestorage.app",
+      messagingSenderId: "1079058103599",
+      appId: "1:1079058103599:web:d9401e6c39c69780d0b5da"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    document.getElementById('contact-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.currentTarget;
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const message = form.message.value.trim();
+      if (!name || !email || !message) return;
+      try {
+        const listRef = ref(db, 'contact_messages');
+        const newRef = push(listRef);
+        await set(newRef, { name, email, message, createdAt: Date.now() });
+        form.reset();
+        alert('¡Gracias! Te responderemos pronto.');
+      } catch (err) {
+        console.error(err);
+        alert('No se pudo enviar. Intenta nuevamente.');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gamics - Create Manage Matches</title>
+  <title>Gamics - Crea y gestiona partidas</title>
 
   <!-- 
     - favicon
@@ -16,6 +16,12 @@
     - custom css link
   -->
   <link rel="stylesheet" href="./assets/css/style.css">
+  <script>
+    // Gate: require simple login token in localStorage
+    (function(){
+      try { if (!localStorage.getItem('session_user')) { window.location.replace('login.html'); } } catch(e){}
+    })();
+  </script>
 
   <!-- 
     - google font link
@@ -43,12 +49,12 @@
       <div class="container">
 
         <div class="countdown-text">
-          Exclusive Black Friday ! Offer <span class="span skewBg">10</span> Days
+          ¡Oferta exclusiva de Black Friday! <span class="span skewBg">10</span> días
         </div>
 
         <div class="social-wrapper">
 
-          <p class="social-title">Follow us on :</p>
+          <p class="social-title">Síguenos en:</p>
 
           <ul class="social-list">
 
@@ -92,19 +98,19 @@
           <ul class="navbar-list">
 
             <li class="navbar-item">
-              <a href="#home" class="navbar-link skewBg" data-nav-link>Home</a>
+              <a href="#home" class="navbar-link skewBg" data-nav-link>Inicio</a>
             </li>
 
             <li class="navbar-item">
-              <a href="#live" class="navbar-link skewBg" data-nav-link>Live</a>
+              <a href="#live" class="navbar-link skewBg" data-nav-link>En vivo</a>
             </li>
 
             <li class="navbar-item">
-              <a href="#features" class="navbar-link skewBg" data-nav-link>Features</a>
+              <a href="#features" class="navbar-link skewBg" data-nav-link>Características</a>
             </li>
 
             <li class="navbar-item">
-              <a href="#shop" class="navbar-link skewBg" data-nav-link>Shop</a>
+              <a href="#shop" class="navbar-link skewBg" data-nav-link>Tienda</a>
             </li>
 
             <li class="navbar-item">
@@ -112,7 +118,7 @@
             </li>
 
             <li class="navbar-item">
-              <a href="#" class="navbar-link skewBg" data-nav-link>Contact</a>
+              <a href="#newsletter" class="navbar-link skewBg" data-nav-link>Contacto</a>
             </li>
 
           </ul>
@@ -202,6 +208,29 @@
         </div>
       </section>
 
+      <!-- Cart Modal -->
+      <div id="cart-modal" class="search-container" style="display:none;">
+        <div class="input-wrapper" style="max-width:720px">
+          <h3 style="margin-bottom:10px">Carrito</h3>
+          <div id="cart-items" style="max-height:260px; overflow:auto; margin-bottom:10px"></div>
+          <div style="display:grid; gap:8px; margin-top:8px">
+            <input class="email-field" id="checkout-name" placeholder="Nombre completo" />
+            <input class="email-field" id="checkout-address" placeholder="Dirección completa" />
+            <select class="email-field" id="checkout-method">
+              <option value="tarjeta">Tarjeta</option>
+              <option value="efectivo">Efectivo</option>
+            </select>
+            <select class="email-field" id="checkout-eta">
+              <option value="hoy">Entrega hoy</option>
+              <option value="24-48h">24-48 horas</option>
+              <option value="3-5d">3-5 días</option>
+            </select>
+            <button class="btn skewBg" id="checkout-confirm"><span class="span">Confirmar pedido</span></button>
+            <button class="btn skewBg" id="cart-close"><span class="span">Cerrar</span></button>
+          </div>
+        </div>
+      </div>
+
 
 
 
@@ -210,10 +239,14 @@
         - #BRAND
       -->
 
-      <section class="section brand" aria-label="brand">
+      <section class="section brand" aria-label="marcas">
         <div class="container">
 
-          <ul class="has-scrollbar">
+          <div class="see-more" style="justify-content: space-between; align-items:center; margin-bottom:8px">
+            <button class="btn skewBg" id="shop-prev" aria-label="prev">◀</button>
+            <button class="btn skewBg" id="shop-next" aria-label="next">▶</button>
+          </div>
+          <ul class="has-scrollbar" id="shop-list">
 
             <li class="brand-item">
               <img src="./assets/images/brand-1.png" width="90" height="90" loading="lazy" alt="brand logo">
@@ -353,11 +386,11 @@
           - #LIVE MATCH
         -->
 
-        <section class="section live-match" id="live" aria-label="live match">
+        <section class="section live-match" id="live" aria-label="partido en vivo">
           <div class="container">
 
             <h2 class="h2 section-title">
-              Watch Live <span class="span">Match</span>
+              Mira en vivo el <span class="span">partido</span>
             </h2>
 
             <figure class="live-match-banner img-holder" style="--width: 800; --height: 470;">
@@ -365,7 +398,7 @@
               <img src="./assets/images/live-match-banner.jpg" width="800" height="470" loading="lazy"
                 alt="Live Match Video" class="img-cover">
 
-              <button class="play-btn" aria-label="play video">
+              <button class="play-btn" aria-label="reproducir video">
                 <ion-icon name="play"></ion-icon>
               </button>
 
@@ -380,7 +413,7 @@
 
               <div class="live-match-detail">
 
-                <p class="live-match-subtitle">Upcoming Live Matches</p>
+                <p class="live-match-subtitle">Próximos partidos en vivo</p>
 
                 <time class="live-match-time" datetime="08:30">08:30</time>
 
@@ -406,11 +439,11 @@
         - #FEATURED GAME
       -->
 
-      <section class="section featured-game" id="features" aria-label="featured game">
+      <section class="section featured-game" id="features" aria-label="juegos destacados">
         <div class="container">
 
           <h2 class="h2 section-title">
-            All Released <span class="span">Games</span>
+            Todos los <span class="span">juegos</span>
           </h2>
 
           <ul class="has-scrollbar">
@@ -627,7 +660,7 @@
           <ul class="has-scrollbar">
 
             <li class="scrollbar-item">
-              <div class="shop-card">
+              <div class="shop-card" data-product-name="Camiseta negra" data-price="29.00">
 
                 <figure class="card-banner img-holder" style="--width: 300; --height: 260;">
                   <img src="./assets/images/shop-img-1.jpg" width="300" height="260" loading="lazy"
@@ -636,7 +669,7 @@
 
                 <div class="card-content">
 
-                  <a href="#" class="card-badge skewBg">t-shirt</a>
+                  <a href="tienda.html" class="card-badge skewBg">t-shirt</a>
 
                   <h3 class="h3">
                     <a href="#" class="card-title">Women Black T-Shirt</a>
@@ -644,8 +677,7 @@
 
                   <div class="card-wrapper">
                     <p class="card-price">$29.00</p>
-
-                    <button class="card-btn">
+                    <button class="card-btn" data-add-to-cart>
                       <ion-icon name="basket"></ion-icon>
                     </button>
                   </div>
@@ -665,7 +697,7 @@
 
                 <div class="card-content">
 
-                  <a href="#" class="card-badge skewBg">x-box</a>
+                  <a href="tienda.html" class="card-badge skewBg">x-box</a>
 
                   <h3 class="h3">
                     <a href="#" class="card-title">Gears 5 Xbox Controller</a>
@@ -694,7 +726,7 @@
 
                 <div class="card-content">
 
-                  <a href="#" class="card-badge skewBg">Graphics</a>
+                  <a href="tienda.html" class="card-badge skewBg">Graphics</a>
 
                   <h3 class="h3">
                     <a href="#" class="card-title">GeForce RTX 2070</a>
@@ -723,7 +755,7 @@
 
                 <div class="card-content">
 
-                  <a href="#" class="card-badge skewBg">VR-Box</a>
+                  <a href="tienda.html" class="card-badge skewBg">VR-Box</a>
 
                   <h3 class="h3">
                     <a href="#" class="card-title">Virtual Reality Smiled</a>
@@ -763,8 +795,7 @@
           </h2>
 
           <p class="section-text">
-            Compete With 100 Players On A Remote Island For Winner Takes Showdown Known Issue Where Certain Skin
-            Strategic
+            Compite con 100 jugadores en una isla remota. Noticias y artículos destacados para la comunidad.
           </p>
 
           <ul class="blog-list">
@@ -790,7 +821,7 @@
                     <li class="card-meta-item">
                       <ion-icon name="calendar-outline"></ion-icon>
 
-                      <time datetime="2022-09-19" class="item-text">September 19, 2022</time>
+                      <time datetime="2022-09-19" class="item-text">19 de septiembre de 2022</time>
                     </li>
 
                   </ul>
@@ -803,7 +834,7 @@
                     Compete With 100 Players On A Remote Island Thats Winner Takes Showdown Known Issue.
                   </p>
 
-                  <a href="#" class="card-link">
+                  <a href="blog.html#post-1" class="card-link">
                     <span class="span">Leer más</span>
 
                     <ion-icon name="caret-forward"></ion-icon>
@@ -849,7 +880,7 @@
                   </p>
 
                   <a href="#" class="card-link">
-                    <span class="span">Read More</span>
+                    <span class="span">Leer más</span>
 
                     <ion-icon name="caret-forward"></ion-icon>
                   </a>
@@ -917,7 +948,7 @@
         - #NEWSLETTER
       -->
 
-      <section class="newsletter" aria-label="boletín">
+      <section class="newsletter" aria-label="boletín" id="newsletter">
         <div class="container">
 
           <div class="newsletter-card">
@@ -1007,27 +1038,27 @@
         <ul class="footer-list">
 
           <li>
-            <p class="footer-list-title">Products</p>
+            <p class="footer-list-title">Productos</p>
           </li>
 
           <li>
-            <a href="#" class="footer-link">Graphics (26)</a>
+            <a href="#" class="footer-link">Gráficos (26)</a>
           </li>
 
           <li>
-            <a href="#" class="footer-link">Backgrounds (11)</a>
+            <a href="#" class="footer-link">Fondos (11)</a>
           </li>
 
           <li>
-            <a href="#" class="footer-link">Fonts (9)</a>
+            <a href="#" class="footer-link">Fuentes (9)</a>
           </li>
 
           <li>
-            <a href="#" class="footer-link">Music (3)</a>
+            <a href="#" class="footer-link">Música (3)</a>
           </li>
 
           <li>
-            <a href="#" class="footer-link">Photography (3)</a>
+            <a href="#" class="footer-link">Fotografía (3)</a>
           </li>
 
         </ul>
@@ -1035,27 +1066,27 @@
         <ul class="footer-list">
 
           <li>
-            <p class="footer-list-title">Need Help?</p>
+            <p class="footer-list-title">¿Necesitas ayuda?</p>
           </li>
 
           <li>
-            <a href="#" class="footer-link">Terms & Conditions</a>
+            <a href="#" class="footer-link">Términos y condiciones</a>
           </li>
 
           <li>
-            <a href="#" class="footer-link">Privacy Policy</a>
+            <a href="#" class="footer-link">Política de privacidad</a>
           </li>
 
           <li>
-            <a href="#" class="footer-link">Refund Policy</a>
+            <a href="#" class="footer-link">Política de reembolso</a>
           </li>
 
           <li>
-            <a href="#" class="footer-link">Affiliate</a>
+            <a href="#" class="footer-link">Afiliados</a>
           </li>
 
           <li>
-            <a href="#" class="footer-link">Use Cases</a>
+            <a href="#" class="footer-link">Casos de uso</a>
           </li>
 
         </ul>
@@ -1064,7 +1095,7 @@
 
           <div class="social-wrapper">
 
-            <p class="footer-list-title">Follow Us</p>
+            <p class="footer-list-title">Síguenos</p>
 
             <ul class="social-list">
 
@@ -1120,7 +1151,7 @@
       <div class="container">
 
         <p class="copyright">
-          &copy; 2022 Gamics. All Right Reserved by <a href="#" class="copyright-link">codewithsadee</a>
+          &copy; 2022 Gamics. Todos los derechos reservados por <a href="#" class="copyright-link">codewithsadee</a>
         </p>
 
         <img src="./assets/images/footer-bottom-img.png" width="340" height="21" loading="lazy" alt=""
@@ -1200,6 +1231,91 @@
 
     handleNewsletter(document.getElementById('newsletter-form'));
     handleNewsletter(document.getElementById('footer-newsletter-form'));
+
+    // Manejo de carrito: registrar clics y actualizar badge
+    function initCart() {
+      const cartBadge = document.querySelector('.cart-badge');
+      const cartBtn = document.querySelector('.cart-btn');
+      const cartModal = document.getElementById('cart-modal');
+      const cartItemsEl = document.getElementById('cart-items');
+      const closeBtn = document.getElementById('cart-close');
+      const confirmBtn = document.getElementById('checkout-confirm');
+      const nameEl = document.getElementById('checkout-name');
+      const addrEl = document.getElementById('checkout-address');
+      const methodEl = document.getElementById('checkout-method');
+      const etaEl = document.getElementById('checkout-eta');
+      let cart = [];
+      try { cart = JSON.parse(localStorage.getItem('cart')||'[]'); } catch(_){}
+      const updateBadge = ()=>{ if(cartBadge) cartBadge.textContent = String(cart.length||0); };
+      const renderCart = ()=>{
+        cartItemsEl.innerHTML = cart.length? '' : '<p>No hay productos en el carrito.</p>';
+        cart.forEach((item, i)=>{
+          const row = document.createElement('div');
+          row.style.display='flex'; row.style.justifyContent='space-between'; row.style.gap='8px'; row.style.margin='4px 0';
+          row.innerHTML = `<span>${item.name}</span><span>$${item.price}</span><button data-remove="${i}" class="btn skewBg">Quitar</button>`;
+          cartItemsEl.appendChild(row);
+        });
+        cartItemsEl.querySelectorAll('button[data-remove]').forEach(btn=>{
+          btn.addEventListener('click', ()=>{
+            const idx = Number(btn.getAttribute('data-remove'));
+            cart.splice(idx,1); localStorage.setItem('cart', JSON.stringify(cart)); updateBadge(); renderCart();
+          });
+        });
+      };
+      updateBadge();
+      document.querySelectorAll('[data-add-to-cart]').forEach(btn=>{
+        btn.addEventListener('click', async (e)=>{
+          const card = e.currentTarget.closest('.shop-card');
+          const name = card?.getAttribute('data-product-name')||'Producto';
+          const price = card?.getAttribute('data-price')||'0.00';
+          cart.push({name, price});
+          localStorage.setItem('cart', JSON.stringify(cart));
+          updateBadge();
+          try { await set(push(ref(db,'cart_events')), {action:'add_to_cart', name, price, createdAt: Date.now()}); } catch(_){ }
+        });
+      });
+      cartBtn?.addEventListener('click', ()=>{ cartModal.style.display = 'block'; renderCart(); });
+      closeBtn?.addEventListener('click', ()=>{ cartModal.style.display = 'none'; });
+      confirmBtn?.addEventListener('click', async ()=>{
+        const order = {
+          items: cart, total: cart.reduce((s,i)=> s + parseFloat(i.price||0), 0),
+          name: nameEl.value.trim(), address: addrEl.value.trim(), method: methodEl.value, eta: etaEl.value,
+          createdAt: Date.now()
+        };
+        if(!order.name || !order.address || !order.items.length){ alert('Completa tus datos y agrega productos.'); return; }
+        try { await set(push(ref(db,'orders')), order); cart = []; localStorage.setItem('cart','[]'); updateBadge(); renderCart(); alert('¡Pedido realizado!'); cartModal.style.display='none'; } catch(e){ alert('Error al confirmar.'); }
+      });
+
+      // Carousel controls
+      const list = document.getElementById('shop-list');
+      document.getElementById('shop-prev')?.addEventListener('click', ()=> list?.scrollBy({left:-300, behavior:'smooth'}));
+      document.getElementById('shop-next')?.addEventListener('click', ()=> list?.scrollBy({left:300, behavior:'smooth'}));
+    }
+
+    // Manejo de lecturas de blog
+    function initBlogReads() {
+      document.querySelectorAll('.blog .card-link').forEach(link => {
+        link.addEventListener('click', async () => {
+          try { await set(push(ref(db,'blog_reads')), { createdAt: Date.now() }); } catch(e){}
+        });
+      });
+      // Expandir texto al pulsar 'Leer más' (sin navegar si es #)
+      document.querySelectorAll('.blog .card-text').forEach(p=>{
+        const more = document.createElement('span');
+        more.textContent = ' Más detalles próximamente.'; more.style.display='none'; p.appendChild(more);
+        const link = p.parentElement?.querySelector('.card-link');
+        link?.addEventListener('click', (ev)=>{
+          if (link.getAttribute('href')?.startsWith('#') || link.getAttribute('href')==='#') { ev.preventDefault(); }
+          more.style.display = more.style.display==='none' ? 'inline' : 'none';
+        });
+      });
+    }
+
+    // Inicializar interacciones
+    window.addEventListener('DOMContentLoaded', () => {
+      initCart();
+      initBlogReads();
+    });
   </script>
 
 </body>
