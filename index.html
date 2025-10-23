@@ -296,7 +296,7 @@
               Crea y <span class="span">Gestiona</span>
             </h2>
 
-            <ul class="has-scrollbar">
+            <ul class="has-scrollbar" id="shop-list">
 
               <li class="scrollbar-item">
                 <div class="latest-game-card">
@@ -446,11 +446,7 @@
             Todos los <span class="span">juegos</span>
           </h2>
 
-          <div class="see-more" style="display:flex; justify-content: space-between; align-items:center; margin-bottom:8px; gap:8px">
-            <button class="btn skewBg" id="shop-prev" aria-label="anterior">◀</button>
-            <button class="btn skewBg" id="shop-next" aria-label="siguiente">▶</button>
-          </div>
-          <ul class="has-scrollbar" id="shop-list">
+          <ul class="has-scrollbar">
 
             <li class="scrollbar-item">
               <div class="featured-game-card">
@@ -590,52 +586,6 @@
               </div>
             </li>
 
-            <li class="scrollbar-item">
-              <div class="featured-game-card">
-
-                <figure class="card-banner img-holder" style="--width: 450; --height: 600;">
-                  <img src="./assets/images/featured-game-4.jpg" width="450" height="600" loading="lazy"
-                    alt="Just for Gamers" class="img-cover">
-                </figure>
-
-                <div class="card-content">
-
-                  <h3 class="h3">
-                    <a href="#" class="card-title" tabindex="-1">
-                      Just for <span class="span">Gamers</span>
-                    </a>
-                  </h3>
-
-                  <span class="card-meta">
-                    <ion-icon name="notifications"></ion-icon>
-
-                    <span class="span">Playstation 5, Xbox</span>
-                  </span>
-
-                </div>
-
-                <div class="card-content-overlay">
-
-                  <img src="./assets/images/featured-game-icon.png" width="36" height="61" loading="lazy" alt=""
-                    class="card-icon">
-
-                  <h3 class="h3">
-                    <a href="#" class="card-title">
-                      Just for <span class="span">Gamers</span>
-                    </a>
-                  </h3>
-
-                  <span class="card-meta">
-                    <ion-icon name="notifications"></ion-icon>
-
-                    <span class="span">Playstation 5, Xbox</span>
-                  </span>
-
-                </div>
-
-              </div>
-            </li>
-
           </ul>
 
         </div>
@@ -656,6 +606,11 @@
           <h2 class="h2 section-title">
             Rincón de <span class="span">Productos</span>
           </h2>
+
+          <div class="see-more" style="display:flex; justify-content: space-between; align-items:center; margin-bottom:8px; gap:8px">
+            <button class="btn skewBg" id="shop-prev" aria-label="anterior">◀</button>
+            <button class="btn skewBg" id="shop-next" aria-label="siguiente">▶</button>
+          </div>
 
           <p class="section-text">
             Compite con 100 jugadores en una isla remota. Descubre accesorios y hardware destacados.
