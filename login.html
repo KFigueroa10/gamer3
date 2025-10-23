@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar sesión - Gamics</title>
+  <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+  <section class="section" aria-label="login">
+    <div class="container">
+      <h1 class="h2 section-title">Iniciar sesión</h1>
+      <p>Ingresa para continuar.</p>
+      <form id="login-form" class="newsletter-form" style="max-width:480px">
+        <div class="input-wrapper skewBg" style="margin-bottom:12px">
+          <input type="text" name="user" placeholder="Usuario o correo" required class="email-field">
+        </div>
+        <button type="submit" class="btn newsletter-btn skewBg"><span class="span">Entrar</span></button>
+      </form>
+    </div>
+  </section>
+
+  <script>
+    document.getElementById('login-form')?.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const user = e.currentTarget.user.value.trim();
+      if(!user) return;
+      try { localStorage.setItem('session_user', user); } catch(e){}
+      window.location.replace('index.html');
+    });
+  </script>
+</body>
+</html>
